@@ -1,0 +1,224 @@
+@import url('https://necolas.github.io/normalize.css/7.0.0/normalize.css');
+
+:root {
+  --viewportHeight: 100vh;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit
+}
+
+html {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: 'futura-pt', sans-serif;
+}
+
+.app {
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: var(--pageWidth);
+  height: var(--pageHeight);
+  background-color: var(--colorBackground);
+  overflow: hidden;
+  --barHeight: 2.5rem;
+  --trayHeight: 3.5rem;
+  --colorBackground: #fff;
+  --pageHeight: var(--viewportHeight);
+  --pageWidth: 100vw;
+  /* menuWidth MUST be smaller than pageWidth */
+  --menuWidth: calc(var(--pageWidth) * .8);
+}
+
+@media (min-width: 25em) {
+  /* 20rem is based upon component being 100vw and at least 25em */
+  .app {
+    --menuWidth: calc(20rem);
+  }
+}
+
+.app-well {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: calc(var(--menuWidth) - var(--pageWidth));
+  right: calc(-1 * var(--pageWidth));
+  height: calc(var(--pageHeight) + 50px);
+  overflow-x: scroll;
+  overflow-y: hidden;
+  overscroll-behavior-y: contain;
+  overscroll-behavior-x: none;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.app-panels {
+  height: var(--pageHeight);
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: start;
+  scroll-snap-align: end;
+  scroll-snap-stop: always;
+}
+
+.app-panels::after {
+  content: '';
+  visibility: hidden;
+  display: block;
+  width: calc(2 * var(--pageWidth));
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.app--slide .app-panels::after,
+.app--fixed .app-panels::after {
+  position: absolute;
+  left: var(--menuWidth)
+}
+
+.panel {
+  height: var(--pageHeight);
+  width: var(--pageWidth);
+  position: relative;
+}
+
+.panel-para {
+  width: calc(2 * var(--pageWidth));
+  height: 100%;
+  perspective: 1px;
+  perspective-origin: calc(var(--pageWidth) - var(--menuWidth)) center;
+}
+
+.app--slide .panel-para {
+  width: var(--pageWidth);
+}
+
+.app--slide .app-well {
+  left: 0;
+}
+
+.panel-lax {
+  width: var(--pageWidth);
+  height: var(--pageHeight);
+  position: sticky;
+  position: -webkit-sticky;
+  left: calc(var(--pageWidth) - var(--menuWidth));
+  transform-origin: left center;
+  --magnitude: 0;
+  transform: translateZ(calc(-1px * var(--magnitude))) scale(calc(1 + var(--magnitude)));
+}
+
+.app--slide .panel-lax,
+.app--fixed .panel-lax {
+  transform: none;
+}
+
+.app--slide .panel-lax {
+  position: relative;
+  left: 0;
+}
+
+.panel--menu {
+  z-index: 2;
+  margin-left: calc(var(--pageWidth) - var(--menuWidth));
+  margin-right: calc(-1 * var(--pageWidth));
+  background-color: #d7d7d7;
+  box-shadow: 10rem 0 0 10rem #888;
+  will-change: transform;
+}
+
+.app--slide .panel--menu {
+  margin-right: 0;
+}
+
+.panel--main {
+  z-index: 1;
+}
+
+.panel--main .scrollport {
+  box-shadow: 10rem 0 0 10rem var(--colorBackground);
+}
+
+.panel--menu,
+.panel--menu .scrollport {
+  width: var(--menuWidth);
+}
+
+.scrollport {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  overscroll-behavior: auto contain;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: 3;
+}
+
+.scrollbox {
+  min-height: calc(var(--pageHeight) + 1px);
+  padding-top: var(--barHeight);
+  padding-bottom: var(--trayHeight);
+}
+
+.content {
+  height: var(--pageHeight);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel--menu {
+    background: rgba(0,0,0,.2);
+
+}
+.nav-wrap {
+  position: absolute;
+  top: 2.5rem;
+  right: 100%;
+  margin-right: 2.5rem;
+  width: auto;
+  height: 3rem;
+  z-index: 999999;
+  cursor: pointer;
+}
+
+.nav-line1,
+.nav-line2,
+.nav-line3  {
+  display: block;
+  height: .25rem;
+  width: 2.5rem;
+  margin-bottom: .375rem;
+  border-radius: 10%;
+  transition: all 200ms ease;
+}
+
+.nav-line {
+  background-color: black;
+}
+
+
+.line {
+  width: 100vw;
+  height: 10px;
+  position: absolute;
+  background-color: black;
+  top: 50vh;
+}
